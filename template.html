@@ -31,9 +31,9 @@
         {% endfor %}
 
         {% if current_page_number == pages_amount %}
-        <li class="page-item disabled"><a class="page-link" tabindex="-1" href="index{{ current_page_number + 1 }}">Вперед</a></li>
+        <li class="page-item disabled"><a class="page-link" tabindex="-1" href="">Вперед</a></li>
         {% else %}
-        <li class="page-item"><a class="page-link" href="">Вперед</a></li>
+        <li class="page-item"><a class="page-link" href="index{{ current_page_number + 1 }}">Вперед</a></li>
         {% endif %}
       </ul>
     </nav>
