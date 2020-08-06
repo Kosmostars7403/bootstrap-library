@@ -53,7 +53,7 @@
                       <span class="badge badge-secondary">{{ genre }}</span>
                     {% endfor %}
                     <p class="card-text">
-                      <a href="../media/{{ book.book_path }}" target="_blank" rel="noopener noreferrer">Читать</a>
+                      <a href="../media/{{ book.book_path | urlencode }}" target="_blank" rel="noopener noreferrer">Читать</a>
                     </p>
                   </div>
                 </div>
