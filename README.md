@@ -2,7 +2,7 @@
 В данном репозитории собраны инструменты и инструкции как скачать
 и запустить онлайн библиотеку у себя на компьютере без интернета.
 
-(Пример сайта)[https://kosmostars7403.github.io/bootstrap-library/pages/index1.html]
+[Пример сайта](https://kosmostars7403.github.io/bootstrap-library/pages/index1.html)
 
 ## Использование
 Для начала перейдите на соседний репозиторий по [ссылке](https://github.com/Kosmostars7403/bootstrap_library).
