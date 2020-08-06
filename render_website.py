@@ -2,23 +2,30 @@ import json
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from livereload import Server
 from more_itertools import chunked
-from pprint import pprint
 import os
 import math
+import glob
 
 def on_reload():
     os.makedirs('pages', exist_ok=True)
 
     library_pages = list(chunked(books_information, 20))
+    library_pages_filepaths = set()
 
     for index, library_page in enumerate(library_pages):
         paired_books = list(chunked(library_page, 2))
-        page_renderer(index, paired_books)
+        page_filepath = 'pages/index{}.html'.format(index + 1)
+        page_renderer(index, paired_books, page_filepath)
+
+        library_pages_filepaths.add(page_filepath)
+
+    remove_unused_pages(library_pages_filepaths)
 
     print("Site rebuilded")
 
 
-def page_renderer(index, paired_books):
+
+def page_renderer(index, paired_books,page_filepath):
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -32,9 +39,15 @@ def page_renderer(index, paired_books):
         current_page_number=index+1,
     )
 
-    with open('pages/index{}.html'.format(index+1), 'w', encoding="utf8") as file:
+    with open(page_filepath, 'w', encoding="utf8") as file:
         file.write(rendered_page)
 
+
+def remove_unused_pages(library_pages_filepaths):
+    pages_folder_content = set(glob.glob('pages/*.html'))
+    pages_for_removing = pages_folder_content.difference(library_pages_filepaths)
+    for page in pages_for_removing:
+        os.remove(page)
 
 if __name__ == '__main__':
     with open('books_information.json', 'r') as json_file:
