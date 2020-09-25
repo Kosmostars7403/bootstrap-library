@@ -6,15 +6,17 @@ import os
 import math
 import glob
 
+ITEMS_ON_PAGE = 20
+
 def on_reload():
     os.makedirs('pages', exist_ok=True)
 
-    library_pages = list(chunked(books_information, 20))
+    library_pages = list(chunked(books_information, ITEMS_ON_PAGE))
     library_pages_filepaths = set()
 
-    for index, library_page in enumerate(library_pages):
+    for index, library_page in enumerate(library_pages, start=1):
         paired_books = list(chunked(library_page, 2))
-        page_filepath = 'pages/index{}.html'.format(index + 1)
+        page_filepath = 'pages/index{}.html'.format(index)
         page_renderer(index, paired_books, page_filepath)
 
         library_pages_filepaths.add(page_filepath)
@@ -35,8 +37,8 @@ def page_renderer(index, paired_books,page_filepath):
 
     rendered_page = template.render(
         paired_books=paired_books,
-        pages_amount=math.ceil(len(books_information)/20),
-        current_page_number=index+1,
+        pages_amount=math.ceil(len(books_information)/ITEMS_ON_PAGE),
+        current_page_number=index,
     )
 
     with open(page_filepath, 'w', encoding="utf8") as file:
@@ -48,6 +50,7 @@ def remove_unused_pages(library_pages_filepaths):
     pages_for_removing = pages_folder_content.difference(library_pages_filepaths)
     for page in pages_for_removing:
         os.remove(page)
+
 
 if __name__ == '__main__':
     with open('books_information.json', 'r') as json_file:
